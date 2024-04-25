@@ -43,9 +43,9 @@
                 class="w-[120px] h-[80px]">
             <ul class="list-none sm:flex hidden justify-end items-center flex-1 px-9">
                 <li class="font-poppins font-normal cursor-pointer text-[16px] text-white mr-10"><a
-                        href="Dashboard.hmtl">Home</a></li>
+                        href="Dashboard.html">Home</a></li>
                 <li class="font-poppins font-normal cursor-pointer text-[16px] text-white mr-10"><a
-                        href="organize_Hackathon.html">Organise Hackathon</a></li>
+                        href="signUpFile.html">Organise Hackathon</a></li>
                 <li class="font-poppins font-normal cursor-pointer text-[16px] text-white mr-0"><a
                         href="loginFile.html">Logout</a></li>
             </ul>
@@ -82,28 +82,22 @@
 
 
     <script>
-            // Retrieve email from local storage
-            const email = localStorage.getItem('email');
-
-
-            // Fetch username based on email
-            fetch(`/getUsername?email=${encodeURIComponent(email)}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    if (data.username) {
-                        document.getElementById('usernameResult').textContent = `${data.username}`;
-                    } else {
-                        document.getElementById('usernameResult').textContent = `Error: User not found`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching username:', error);
-                    document.getElementById('usernameResult').textContent = 'Error fetching username';
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                const response = await fetch('/api/hackathons');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch hackathons');
+                }
+                const hackathons = await response.json();
+                const container = document.getElementById('hackathonCardsContainer');
+                hackathons.forEach(hackathon => {
+                    const card = createHackathonCard(hackathon);
+                    container.appendChild(card);
                 });
-
-    
-
+            } catch (error) {
+                console.error('Error fetching hackathons:', error);
+            }
+        });
     
         function createHackathonCard(hackathon) {
             const card = document.createElement('div');
@@ -111,7 +105,7 @@
     
             card.innerHTML = `
                 <div class="swiper-slide newCard">
-                    <a class="text-link" href="https://example.com" target="_blank">
+                    <a class="text-link" href="register.html" target="_blank">
                         <div class="card hack-event-card bg-slate-600 text-white">
                             <img class="card-img-top border-bottom" src="https://s3-h2s-v2.s3.ap-south-1.amazonaws.com/2024-04-04T04%3A57%3A27.781Z-ACE_Hackathon.png" alt="New Hackathon">
                             <div class="card-body text-white">
@@ -131,7 +125,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <a name="" id="" class="btn btn-gradient w-100" href="https://example.com" role="button" target="_blank"
+                                <a name="" id="" class="btn btn-gradient w-100" href="register.html" role="button" target="_blank"
                                     rel="noreferrer">
                                     Register Now
                                 </a>

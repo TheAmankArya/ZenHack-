@@ -288,7 +288,7 @@ h1 {
     
                 if (response.status === 201) {
                     console.log('User registered successfully');
-                    window.location.href = 'filee.html'; // Redirect to a success page
+                    window.location.href = 'Dashboard.hmtl'; // Redirect to a success page
                 } else if (response.status === 400) {
                     const data = await response.json();
                     alert(data.message);

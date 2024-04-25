@@ -43,7 +43,7 @@
                 class="w-[120px] h-[80px]">
             <ul class="list-none sm:flex hidden justify-end items-center flex-1 px-9">
                 <li class="font-poppins font-normal cursor-pointer text-[16px] text-white mr-10"><a
-                        href="filee.html">Home</a></li>
+                        href="Dashboard.hmtl">Home</a></li>
                 <li class="font-poppins font-normal cursor-pointer text-[16px] text-white mr-10"><a
                         href="organize_Hackathon.html">Organise Hackathon</a></li>
                 <li class="font-poppins font-normal cursor-pointer text-[16px] text-white mr-0"><a
@@ -82,22 +82,28 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', async function () {
-            try {
-                const response = await fetch('/api/hackathons');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch hackathons');
-                }
-                const hackathons = await response.json();
-                const container = document.getElementById('hackathonCardsContainer');
-                hackathons.forEach(hackathon => {
-                    const card = createHackathonCard(hackathon);
-                    container.appendChild(card);
+            // Retrieve email from local storage
+            const email = localStorage.getItem('email');
+
+
+            // Fetch username based on email
+            fetch(`/getUsername?email=${encodeURIComponent(email)}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.username) {
+                        document.getElementById('usernameResult').textContent = `${data.username}`;
+                    } else {
+                        document.getElementById('usernameResult').textContent = `Error: User not found`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching username:', error);
+                    document.getElementById('usernameResult').textContent = 'Error fetching username';
                 });
-            } catch (error) {
-                console.error('Error fetching hackathons:', error);
-            }
-        });
+
+    
+
     
         function createHackathonCard(hackathon) {
             const card = document.createElement('div');
